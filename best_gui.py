@@ -9,7 +9,7 @@ from PIL import ImageTk, Image, ImageDraw
 model_load = load_model('model_mnist.h5')
 
 
-def event_function(event):
+def draw_oval(event):
     x = event.x
     y = event.y
     x1 = x - 8
@@ -27,7 +27,7 @@ def save():
     img_array = np.array(img)
     img_array = cv2.resize(img_array, (28, 28))
 
-    cv2.imwrite(str(count) + '.jpg', img_array)
+    cv2.imwrite(str(count) + '_digit.jpg', img_array)
     count = count + 1
 
 
@@ -38,7 +38,7 @@ def clear():
     img = Image.new('RGB', (500, 500), (0, 0, 0))
     img_draw = ImageDraw.Draw(img)
 
-    label_status.config(text='PREDICTED DIGIT: NONE')
+    label_status.config(text='Draw digit')
 
 
 def predict():
@@ -53,7 +53,7 @@ def predict():
 
     # print(acc)
 
-    label_status.config(text='Guess it is: ' + str(digit) + ' with prob '+ str(int(acc * 100)) +' %')
+    label_status.config(text='Guess it is: ' + str(digit) + ' with prob '+ str(int(acc * 100)) +'%')
 
 
 count = 0
@@ -65,22 +65,20 @@ win.title("Digit recognition")
 canvas = tk.Canvas(win, width=500, height=500, bg='white')
 canvas.grid(row=0, column=0, columnspan=4)
 
-button_save = tk.Button(win, text='SAVE', bg='green', fg='white', font='Helvetica 20 bold', command=save)
+button_save = tk.Button(win, text='SAVE', bg='green', fg='white', font='Arial 20 bold', command=save)
 button_save.grid(row=1, column=0)
 
-button_predict = tk.Button(win, text='PREDICT', bg='blue', fg='white', font='Helvetica 20 bold', command=predict)
+button_predict = tk.Button(win, text='PREDICT', bg='blue', fg='white', font='Arial 20 bold', command=predict)
 button_predict.grid(row=1, column=1)
 
-button_clear = tk.Button(win, text='CLEAR', bg='yellow', fg='black', font='Helvetica 20 bold', command=clear)
+button_clear = tk.Button(win, text='CLEAR', bg='yellow', fg='black', font='Arial 20 bold', command=clear)
 button_clear.grid(row=1, column=2)
 
-button_exit = tk.Button(win, text='EXIT', bg='red', fg='white', font='Helvetica 20 bold', command=win.destroy)
-button_exit.grid(row=1, column=3)
 
-label_status = tk.Label(win, text='PREDICTED DIGIT: NONE', bg='white', font='Helvetica 24')
+label_status = tk.Label(win, text='Draw digit', bg='white', font='Arial 24')
 label_status.grid(row=2, column=0, columnspan=4)
 
-canvas.bind('<B1-Motion>', event_function)
+canvas.bind('<B1-Motion>', draw_oval)
 
 
 img = Image.new('RGB', (500, 500), (0, 0, 0))
